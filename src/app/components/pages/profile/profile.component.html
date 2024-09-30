@@ -1,0 +1,93 @@
+<br><br><br>
+
+<div class="profile-container">
+  <mat-card class="profile-card">
+
+    <mat-card-header>
+      <div mat-card-avatar class="profile-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+
+      <div >
+      <mat-card-title>{{ userActivate.firstName }} {{ userActivate.lastName }}</mat-card-title>
+      <mat-card-subtitle>{{ userActivate.username }}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-icon matListIcon>badge</mat-icon>
+        <mat-panel-title> ID de Usuario:</mat-panel-title>
+        <mat-panel-description> {{ userActivate.userId }} </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div>
+
+          <button class="btn btn-outline-success" type="menu" (click) = "updateInfoUser('id')">Update</button>
+
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-icon matListIcon>person</mat-icon>
+        <mat-panel-title> Nombre completo: </mat-panel-title>
+        <mat-panel-description> {{ userActivate.firstName }} {{userActivate.lastName}}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <div>
+
+        <button class="btn btn-outline-success" type="menu" (click) = "updateInfoUser('name')">Update</button>
+
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-icon matListIcon>email</mat-icon>
+        <mat-panel-title> E-mail:</mat-panel-title>
+        <mat-panel-description> {{ userActivate.email }} </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div>
+
+        <button class="btn btn-outline-success" type="menu" (click) = "updateInfoUser('email')">Update</button>
+        @if (updateEmail === true) {
+          <br>
+          <form [formGroup]="formUpdateEmail" (ngSubmit)="sendUpdate('email')" >
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input
+              type="email" class="form-control" id="email" formControlName="attrUpdate">
+              <br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        }
+
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-icon matListIcon>account_circle</mat-icon>
+        <mat-panel-title> Nombre de Usuario:</mat-panel-title>
+        <mat-panel-description>{{ userActivate.username }}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <div>
+
+        <button class="btn btn-outline-success" type="menu" (click) = "updateInfoUser('username')">Update</button>
+        @if (updateUsername === true) {
+          <br>
+          <form [formGroup]="formUpdateUsername" (ngSubmit)="sendUpdate('username')" >
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input class="form-control" id="username" formControlName="attrUpdate">
+              <br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        }
+
+      </div>
+    </mat-expansion-panel>
+
+  </mat-card>
+</div>

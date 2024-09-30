@@ -1,0 +1,113 @@
+
+<br><br><br><br>
+
+
+
+
+<div class="container">
+
+  <h1 class="title mat-headline">Register:</h1>
+
+  <form [formGroup]="formRegister" (ngSubmit)="sendRegister()" >
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input  [ngClass]="{'is-invalid': hasError('firstName', 'minlength') || hasError('firstName', 'required')}"
+      type="text" class="form-control" id="firstName" formControlName="firstName">
+      <div class="text-danger" *ngIf="hasError('firstName', 'minlength')">First Name must be more than 3 characters long.</div>
+      <div class="text-danger" *ngIf="hasError('firstName', 'required')">First Name required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input  [ngClass]="{'is-invalid': hasError('lastName', 'minlength') || hasError('lastName', 'required')}"
+      type="text" class="form-control" id="lastName" formControlName="lastName">
+      <div class="text-danger" *ngIf="hasError('lastName', 'minlength')">Name must be more than 3 characters long.</div>
+      <div class="text-danger" *ngIf="hasError('lastName', 'required')">Name required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input [ngClass]="{'is-invalid': hasError('email', 'email') || hasError('email', 'required')}"
+      type="email" class="form-control" id="email" formControlName="email">
+      <div class="text-danger" *ngIf="hasError('email', 'email' )">Email format no valid.</div>
+      <div class="text-danger" *ngIf="hasError('email', 'required')">Email required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input  [ngClass]="{'is-invalid': hasError('username', 'minlength') || hasError('username', 'required')}"
+      type="text" class="form-control" id="username" formControlName="username">
+      <div class="text-danger" *ngIf="hasError('username', 'minlength')">Name must be more than 3 characters long.</div>
+      <div class="text-danger" *ngIf="hasError('username', 'required')">Name required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="rolType" class="form-label" id="rolType">Rol permisions</label>
+      <select class="form-select" id="rolType" formControlName="rolType">
+        <option value="Managment">Managment</option>
+        <option value="Tecnical" >Tecnical</option>
+        <option value="Operator" >Operator</option>
+        <option value="Intersed" >Intersed</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="rolId" class="form-label">{{rolType}} Id:</label>
+      <input [ngClass]="{'is-invalid': hasError('email', 'required')}"
+      type="text" class="form-control" id="rolId" formControlName="rolId">
+      <div class="text-danger" *ngIf="hasError('rolId', 'required')">{{rolType}} Id required.</div>
+    </div>
+
+    <div class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="password" class="form-label">Password</label>
+      </div>
+      <div class="col-auto">
+        <input [ngClass]="{'is-invalid': hasError('password', 'required') || hasError('password', 'minlength')}"
+        type="password" class="form-control" id="password" formControlName="password">
+      </div>
+      <div class="col-auto">
+        <span id="passwordHelpInline" class="form-text">
+          Must be 8-20 characters long.
+        </span>
+        <div class="text-danger" *ngIf="hasError('password', 'required')">Password required.</div>
+        <div class="text-danger" *ngIf="hasError('password', 'minlength')">Password must be 8-20 characters long.</div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="password" class="form-label">Check Password</label>
+      </div>
+      <div class="col-auto">
+        <input [ngClass]="{'is-invalid': hasError('checkPassword', 'required') || hasError('checkPassword', 'minlength')}"
+        type="password" class="form-control" id="checkPassword" formControlName="checkPassword">
+      </div>
+      <div class="col-auto">
+        <span id="passwordHelpInline" class="form-text">
+          Repeat the password.
+          Must be 8-20 characters long.
+        </span>
+        <div class="text-danger" *ngIf="hasError('password', 'required')">Check Password required.</div>
+        <div class="text-danger" *ngIf="hasError('password', 'minlength')">Password must be 8-20 characters long.</div>
+      </div>
+    </div>
+    <br>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="checkAgg" formControlName="checkAgg">
+      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form><br><br>
+
+
+  <div>
+    <button class="btn btn-outline-success" type="menu" (click)="comeBack()" >Volver</button>
+  </div>
+
+</div>
+
+

@@ -1,0 +1,39 @@
+<p >user-login works!</p>
+<br><br><br>
+
+@if (authService.isLoggedIn$ | async) {
+  <h1 class="title mat-headline">You are logged</h1>
+  <h2 class="title mat-label">Welcome {{username}}</h2>
+}@else{
+  <div class="container fill" style="width: fit-content;">
+
+    <h1 class="title mat-headline">You are not logged </h1>
+    <mat-card>
+        <mat-card-header>
+              <mat-card-title>Init Session</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+              <form class="form-custom fill" [formGroup]="formLogin" >
+                  <mat-form-field class="input-custom" style="width: fit-content;">
+                        <mat-label>Username</mat-label>
+                        <input matInput formControlName="username" >
+                  </mat-form-field>
+                  <br>
+                  <mat-form-field class="input-custom fill" style="width: fit-content;">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Mostrar u ocultar contraseña'" [attr.aria-pressed]="!hide" type="button">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                  </mat-form-field>
+
+                  <div class="flex">
+                        <button mat-flat-button color="primary" (click)="initSession()">Login</button>
+                        <button mat-flat-button color="warn" (click)="register()" style="margin-left:8px">Sing in</button>
+                  </div>
+              </form>
+        </mat-card-content>
+    </mat-card>
+
+  </div>
+}
