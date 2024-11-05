@@ -7,14 +7,14 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class MapService {
 
-  public userLocation?: [number, number];
+  public userLocation?: [number, number, number];
 
   constructor() { }
 
   public getUserLocation(){
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.userLocation = [position.coords.latitude, position.coords.longitude];
+        this.userLocation = [position.coords.latitude, position.coords.longitude, position.coords.accuracy];
       },
       (error) => {
         console.error('Error getting location', error);

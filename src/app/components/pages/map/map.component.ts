@@ -3,11 +3,12 @@ import { MapService } from '../../../services/map.service';
 import { icon, marker, Map, tileLayer } from 'leaflet';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard],
+  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, NgIf],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
@@ -40,7 +41,8 @@ export class MapComponent implements OnInit{
     }, 2000);
     this.userLocation = this.mapService.userLocation;
     if(this.userLocation){
-      marker(this.userLocation).addTo(this.map).bindPopup('Estas aquí!').openPopup();
+      const popupContent = `${this.userLocation[0]}, ${this.userLocation[1]}, ${this.userLocation[2].toFixed(3)}`;
+      marker(this.userLocation).addTo(this.map).bindPopup(popupContent).openPopup();
       this.map.flyTo(this.userLocation, 15);
     }
   }

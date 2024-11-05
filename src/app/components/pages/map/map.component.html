@@ -13,9 +13,14 @@
 </mat-card>
 <br>
 
-<div style="align-items: center;">
+<!-- Start of Selection -->
+<div style="align-items: center; display: flex; justify-content: left;">
   <button type="button" class="btn btn-outline-secondary" (click)="goUserLocation()">Find me</button>
+  <p *ngIf="userLocation" style="margin-left: 10px;">
+    latitud: {{userLocation[0]}}, longitud: {{userLocation[1]}}, precisión: {{userLocation[2].toFixed(3)}} 
+  </p>
 </div>
+<!-- End of Selection -->
 
 <div style="align-items: center;">
   <button type="button" class="btn btn-outline-secondary" >Add WMS</button>
