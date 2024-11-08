@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '../settings/app.settings';
-import { Owners } from '../interfaces/owners';
+import { OwnersPost, OwnersGet } from '../interfaces/owners';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class OwnerReqService {
   private http = inject(HttpClient);
   private baseUrl: string = BASE_URL.apiUrl;
 
-  public owner: Owners = {
+  public owner: OwnersGet = {
     id: 0,
     name: '',
     lastName: '',
@@ -25,7 +25,11 @@ export class OwnerReqService {
 
   constructor() {}
 
-  public getOwner(): Observable<Owners[]> {
-    return this.http.get<Owners[]>(`${this.baseUrl}owners/owners/`);
+  public getOwner(): Observable<OwnersGet[]> {
+    return this.http.get<OwnersGet[]>(`${this.baseUrl}owners/owners/`);
+  }
+
+  public postOwner(data: OwnersPost): Observable<OwnersPost> {
+    return this.http.post<OwnersPost>(`${this.baseUrl}owners/owners/`, data);
   }
 }

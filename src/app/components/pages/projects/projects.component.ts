@@ -6,7 +6,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { TablesComponent } from './tables/tables.component';
 import { OwnerReqService } from '../../../services/owner-req.service';
-import { Owners } from '../../../interfaces/owners';
+import { OwnersPost,OwnersGet } from '../../../interfaces/owners';
 import { DataSource } from '@angular/cdk/collections';
 import { ResponseOwners } from '../../../interfaces/resposeOwner';
 import { MatTableModule } from '@angular/material/table';
@@ -25,7 +25,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 export class ProjectsComponent implements OnInit{
 
   data: Parcel[] = [];
-  dataSource: Owners[] = [];
+  dataSource: OwnersGet[] = [];
   displayedColumns: string[] = ['id', 'name','lastName','email','phone', 'description', 'task', 'done'];
 
   private ownerReqService = inject(OwnerReqService)
@@ -68,7 +68,7 @@ export class ProjectsComponent implements OnInit{
     this.selectedForm = form;
     if(form === 'owners'){
       this.ownerReqService.getOwner().subscribe({
-        next: (data:Owners[]) => {
+        next: (data:OwnersGet[]) => {
           if(data){
             console.log('Owners:', data)
             this.dataSource = data
@@ -104,13 +104,45 @@ export class ProjectsComponent implements OnInit{
   onOwnersSubmit() {
     if (this.ownersForm.valid) {
       console.log('Login', this.ownersForm.value);
+      var dataPost: OwnersPost = {
+        name: this.ownersForm.value.ownerName,
+        lastName: this.ownersForm.value.ownerLastName,
+        email: this.ownersForm.value.ownerEmail,
+        phone: this.ownersForm.value.ownerPhone,
+        description: this.ownersForm.value.ownerDescription,
+        task: this.ownersForm.value.ownerTask,
+        done: this.ownersForm.value.ownerDone,
+      }
+      console.log(dataPost)
+      this.postOwner(dataPost)
+    }else {
+      alert('Data error: Form invalid.')
     }
+  }
+
+  postOwner(Post:OwnersPost){
+    if(this.selectedState ==='save'){
+      this.ownerReqService.postOwner(Post).subscribe({
+        next: (data:OwnersPost) => {
+          console.log('Owner registrado:', data)
+          this.resetFormOwner()
+        },error: (error: any) => {
+            console.log('Error:', error.message);
+            alert(`Error al registrar el propietario: ${error.message}`)
+          }
+        })
+      }
+  }
+
+  resetFormOwner(): void {
+    this.ownersForm.reset();
+    this.showForm('owners')
   }
 
   onParcelSubmit() {
     if (this.parcelForm.valid) {
     console.log('Register', this.parcelForm.value);
-    const dataPost: Parcel = {
+    var dataPost: Parcel = {
       code: this.parcelForm.value.parcelCode,
       municipality: this.parcelForm.value.parcelMunicipality,
       geom: this.parcelForm.value.parcelGeom,

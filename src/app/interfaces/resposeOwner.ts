@@ -1,5 +1,5 @@
-import { Owners } from "./owners";
+import { OwnersGet } from "./owners";
 
 export interface ResponseOwners{
-  values: Owners[]
+  values: OwnersGet[]
 }

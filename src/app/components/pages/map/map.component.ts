@@ -4,6 +4,7 @@ import { icon, marker, Map, tileLayer, layerGroup, control } from 'leaflet';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { NgIf } from '@angular/common';
+import { streetEsri, Esri_WorldImagery,Esri_WorldTopoMap} from './mapsStore';
 
 @Component({
   selector: 'app-map',
@@ -18,19 +19,14 @@ export class MapComponent implements OnInit{
 
   public userLocation?: any;
   public mapService = inject(MapService)
-  public streetEsri: any = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'});
-
-  public Esri_WorldTopoMap = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'});
-
-  public Esri_WorldImagery = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'});
+  public streetEsri = streetEsri;
+  public topoEsri = Esri_WorldTopoMap;
+  public satelitalEsri = Esri_WorldImagery;
 
   public baseMaps: {} = {
     "streetMapEsri": this.streetEsri,
-    "topoEsri": this.Esri_WorldTopoMap,
-    "satelitalEsri": this.Esri_WorldImagery
+    "topoEsri": this.topoEsri,
+    "satelitalEsri": this.satelitalEsri
   };
 
   public selectedLayer: string = 'streetEsri';

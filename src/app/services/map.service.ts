@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { isPlatformBrowser } from '@angular/common';
+import { ParcelsReqService } from './parcels-req.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
 
+  private _parcelsService = inject(ParcelsReqService)
   public userLocation?: [number, number, number];
 
   constructor() { }
@@ -21,6 +23,9 @@ export class MapService {
       }
     );
     return this.userLocation;
+  }
+  public getParcels(){
+
   }
 
 }
