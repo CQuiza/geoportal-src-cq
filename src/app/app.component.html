@@ -17,10 +17,16 @@
             <a class="nav-link" routerLink='projects'>Projects</a>
           </li>
         }
+
+        @if ( authService.isLoggedIn$ | async) {
+          
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link"  routerLink="user/register">Register</a>
+          </li>
+        }
         
-        <li class="nav-item">
-          <a class="nav-link"  routerLink="user/register">Users</a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link" routerLink="about">About Us</a>
         </li>
