@@ -8,11 +8,12 @@ import { UserService } from '../../../services/user.service';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, MatGridListModule, MatListModule, MatExpansionModule, ReactiveFormsModule, CommonModule],
+  imports: [MatCardModule, MatIconModule, MatGridListModule, MatListModule, MatExpansionModule, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -62,8 +63,8 @@ export class ProfileComponent implements OnInit{
     this.userActivate.userId = user.id;
     this.userActivate.email = user.email;
     this.userActivate.username = user.username;
-    this.userActivate.firstName = 'Cristhian Andres';
-    this.userActivate.lastName = 'Quiza Neuto';
+    this.userActivate.firstName = user.first_name;
+    this.userActivate.lastName = user.last_name;
 
     this.updateEmail = false;
     this.updateUsername = false;

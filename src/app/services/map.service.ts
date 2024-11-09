@@ -10,6 +10,7 @@ export class MapService {
 
   private _parcelsService = inject(ParcelsReqService)
   public userLocation?: [number, number, number];
+  public parcels : any;
 
   constructor() { }
 
@@ -24,8 +25,5 @@ export class MapService {
     );
     return this.userLocation;
   }
-  public getParcels(){
-
-  }
-
+  
 }

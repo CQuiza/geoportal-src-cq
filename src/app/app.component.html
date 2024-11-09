@@ -5,7 +5,7 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" routerLink=''>GeoPortal</a>
+    <a class="navbar-brand" routerLink='map'>GeoPortal</a>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -32,7 +32,7 @@
           @if (authService.isLoggedIn$ | async) {
             <ul class="navbar-nav">
               <li class= "nav-item">
-                <a class="nav-link" routerLink='profile'>{{localUsername}}</a>
+                <a class="nav-link" routerLink='profile' >{{localUsername}}</a>
               </li>
               <li class= "nav-item">
                 <button mat-icon-button (click)="logout()" class="button">

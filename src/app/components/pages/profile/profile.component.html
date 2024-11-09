@@ -5,11 +5,13 @@
 
     <mat-card-header>
       <div mat-card-avatar class="profile-avatar">
-        <mat-icon>account_circle</mat-icon>
+        <mat-icon routerLink="/user/login">account_circle</mat-icon>
       </div>
 
       <div >
-      <mat-card-title>{{ userActivate.firstName }} {{ userActivate.lastName }}</mat-card-title>
+      <mat-card-title >
+        <button style="background-color: transparent; border: 0ch;" routerLink="/user/login">{{ userActivate.firstName }} {{ userActivate.lastName }}</button>
+      </mat-card-title>
       <mat-card-subtitle>{{ userActivate.username }}</mat-card-subtitle>
       </div>
     </mat-card-header>

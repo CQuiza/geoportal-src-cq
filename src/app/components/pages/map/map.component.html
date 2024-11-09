@@ -3,27 +3,49 @@
 
 <mat-card style="width: auto; height: auto;">
   <mat-card-header>
-    <mat-card-title>Temàtica del mapa</mat-card-title>
-    <mat-card-subtitle>Descripción</mat-card-subtitle>
+    <mat-card-title>Mapa Demo</mat-card-title>
   </mat-card-header>
   <mat-card-content style="width: auto; height: auto;">
 
   </mat-card-content>
 
+  <!-- Start of Selection -->
+  <div style="align-items: center; display: flex; justify-content: left;">
+    <button type="button" class="btn btn-outline-secondary" (click)="goUserLocation()">Find me</button>
+    @if (userLocation) {
+      <p style="margin-left: 10px;">latitud: {{userLocation[0]}}, longitud: {{userLocation[1]}}, precisión: {{userLocation[2].toFixed(3)}} </p>
+    }
+  </div>
+  <!-- End of Selection -->
+
 </mat-card>
 <br>
 
-<!-- Start of Selection -->
-<div style="align-items: center; display: flex; justify-content: left;">
-  <button type="button" class="btn btn-outline-secondary" (click)="goUserLocation()">Find me</button>
-  @if (userLocation) {
-    <p style="margin-left: 10px;">latitud: {{userLocation[0]}}, longitud: {{userLocation[1]}}, precisión: {{userLocation[2].toFixed(3)}} </p>
-  }
-</div>
-<!-- End of Selection -->
 
-<div style="align-items: center; display: flex; justify-content: left;">
-  <button type="button" class="btn btn-outline-secondary" >Parcels</button>
-</div>
+
+
 
 <div id="map" class="map-container" style="align-items: center;"></div>
+
+
+
+@if (authService.isLoggedIn$ |async) {
+  <mat-card style="width: auto; height: auto;">
+    <mat-card-header>
+      <mat-card-title>Entidades</mat-card-title>
+      <mat-card-subtitle>Descripción</mat-card-subtitle>
+    </mat-card-header>  
+  </mat-card>
+  
+
+  <div style="align-items: center; display: flex; justify-content: right;">
+  
+    <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" (click)="getParcels()" >Parcels</button>
+    <button type="button" class="btn btn-outline-secondary" style="margin: 3px; color: white; background-color: black;" >add GeoJSON</button>
+    <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" >Draw Parcel</button>
+  </div>
+  
+  <div >
+    <app-projects></app-projects>
+  </div>
+}

@@ -89,7 +89,8 @@ export class UserRegisterComponent implements OnInit{
       next:(data:any) => {
         if(data.isSucces){
           let token: string = data.token
-          this._authService.logged(token)
+          let username: string = data.username;
+          this._authService.logged(token, username)
           console.log({data})
           alert(data.message);
         }else {

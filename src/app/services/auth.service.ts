@@ -48,8 +48,9 @@ export class AuthService {
     return tokenExist
   }
 
-  public logged(token:string){
+  public logged(token:string, username:string){
     localStorage.setItem('token', token);
+    localStorage.setItem('username', username)
     this._isLoggedIn$.next(true);
     this._validToken = token
     this.router.navigate(['user/login']);

@@ -11,11 +11,14 @@ export class ParcelsReqService {
 
   private http = inject(HttpClient);
   private baseUrl: string = BASE_URL.apiUrl;
+  public parcels! : any;
 
   constructor() { }
 
   public getParcels(): Observable<Parcel[]> {
-    return this.http.get<Parcel[]>(`${this.baseUrl}owners/parcel/`);
+    var data = this.http.get<Parcel[]>(`${this.baseUrl}owners/parcel/`);
+    this.parcels = data;
+    return data
   }
 
   public postParcel(dataPost:Parcel):Observable<Parcel>{

@@ -30,7 +30,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     if(this.isBrowser()){
-    this.localUsername = localStorage.getItem('username') || ''}
+    this.localUsername = localStorage.getItem('username') || 'logged';}
   }
 
   logout() {
@@ -40,6 +40,7 @@ export class AppComponent implements OnInit{
         console.log('Logout exitoso:', response);
         this.authService.finalizeLogout()
         this._userService.deactivateUser()
+        this.localUsername = ''
       },
       error: (err) => {
         console.error('Error al cerrar sesión:', err);

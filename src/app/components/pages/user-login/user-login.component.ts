@@ -63,7 +63,8 @@ export class UserLoginComponent implements OnInit{
       next:(data:ResponseAuth) => {
         if(data.isSucces === true){
           let token: string = data.token;
-          this._authService.logged(token);
+          let username: string = data.username;
+          this._authService.logged(token, username);
           this._userService.activateUser(data)
           console.log('logged:',{data})
           alert(data.message);
