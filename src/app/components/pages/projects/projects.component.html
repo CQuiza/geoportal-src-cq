@@ -1,9 +1,17 @@
 <br><br><br><br>
 
+<div>
+  <p id="toast" style="display: none;"></p>
+</div>
+
 <div class="container">
   <div class="button-group">
     <button mat-raised-button color="primary" (click)="showForm('owners')">Owners Register</button>
     <button mat-raised-button color="accent" (click)="showForm('parcels')">Parcels</button>
+  </div>
+
+  <div>
+    <p id="toast" style="display: none;"></p>
   </div>
 
   <!-- Formulario de Login -->
@@ -112,6 +120,7 @@
   <!-- Formulario de Registro -->
   @if (selectedForm === 'parcels') {
     <form [formGroup]="parcelForm" (ngSubmit)="onParcelSubmit()" class="form">
+      
       <mat-form-field appearance="fill">
         <mat-label>Code</mat-label>
         <input matInput formControlName="parcelCode" placeholder='89776'>
@@ -127,10 +136,22 @@
         <input matInput formControlName="parcelOwner" placeholder="" type="deptoNumMpios">
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Geom WKT</mat-label>
-        <input matInput formControlName="parcelGeom" placeholder="" type="parcelGeom">
-      </mat-form-field>
+      <!-- form para wkt manual
+
+      @if (!drawWkt) {
+        <mat-form-field appearance="fill">
+          <mat-label>Geom WKT</mat-label>
+          <input matInput formControlName="parcelGeom" placeholder="" type="parcelGeom">
+        </mat-form-field>
+      } @else {
+        <mat-form-field appearance="fill">
+          <mat-label>Geom WKT</mat-label>
+          <input matInput formControlName="parcelGeom" placeholder="" type="drawWkt">
+        </mat-form-field>
+      } 
+        -->
+
+      
 
       <mat-form-field appearance="fill">
         <mat-label>Area</mat-label>
@@ -143,14 +164,14 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Creation  date</mat-label>
         <input matInput [matDatepicker]="create" matInput formControlName="parcelDateCreate" type="parcelDateCreate" style="display: inline;" placeholder="MM/DD/YYYY">
         <mat-datepicker-toggle matIconSuffix [for]="create"></mat-datepicker-toggle>
         <mat-datepicker #create></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Update date</mat-label>
         <input matInput [matDatepicker]="update" matInput formControlName="parcelUpdateAt" type="parcelUpdateAt" style="display: inline;" placeholder="MM/DD/YYYY">
         <mat-datepicker-toggle matIconSuffix [for]="update"></mat-datepicker-toggle>
         <mat-datepicker #update></mat-datepicker>
@@ -187,7 +208,6 @@
                 <td>
                   <button type="button" class="btn btn-light" (click)="getRecord(value.code)">{{value.code}}</button>
                 </td>
-                <th scope="row">{{$index+1}}</th>
                 <td style="color: gray;">{{value.municipality}}</td>
                 <td style="color: gray;">{{value.party_owner}}</td>
                 <td style="color: gray;">{{value.area}}</td>
@@ -198,6 +218,7 @@
                   <button type="button" class="btn btn-light" (click)="showGeom(value.geom)">Show</button>
                 </td>
               </tr>
+              
             }
           </table>
 
@@ -210,6 +231,7 @@
 </div>
 
 <br><br>
+<p>{{drawWkt}} </p>
 
 <section>
   <div class="container">

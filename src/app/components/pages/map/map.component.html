@@ -2,9 +2,9 @@
 <br>
 
 <mat-card style="width: auto; height: auto;">
-  <mat-card-header>
+  <!--mat-card-header>
     <mat-card-title>Mapa Demo</mat-card-title>
-  </mat-card-header>
+  </mat-card-header-->
   <mat-card-content style="width: auto; height: auto;">
 
   </mat-card-content>
@@ -25,7 +25,7 @@
 
 
 
-<div id="map" class="map-container" style="align-items: center;"></div>
+<div id="map" class="map-container" ></div>
 
 
 
@@ -42,10 +42,10 @@
   
     <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" (click)="getParcels()" >Parcels</button>
     <button type="button" class="btn btn-outline-secondary" style="margin: 3px; color: white; background-color: black;" >add GeoJSON</button>
-    <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" >Draw Parcel</button>
+    <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" (click)="initDrawControl()" >Draw Parcel</button>
   </div>
   
   <div >
-    <app-projects></app-projects>
+    <app-projects [drawWkt] = "drawWkt"></app-projects>
   </div>
 }

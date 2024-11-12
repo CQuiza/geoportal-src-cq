@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
@@ -24,12 +24,15 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 })
 export class ProjectsComponent implements OnInit{
 
+  @Input() drawWkt!: string;
+
   data: Parcel[] = [];
   dataSource: OwnersGet[] = [];
   displayedColumns: string[] = ['id', 'name','lastName','email','phone', 'description', 'task', 'done'];
 
   private ownerReqService = inject(OwnerReqService)
   private parcelsReqService = inject(ParcelsReqService)
+  private toast! : any;
 
   selectedForm : 'owners' | 'parcels' = 'owners';
   selectedState: 'save' | 'edit' = 'save'
@@ -52,7 +55,7 @@ export class ProjectsComponent implements OnInit{
       parcelCode: ['',[Validators.required]],
       parcelMunicipality: ['',[Validators.required]],
       parcelOwner: ['',[Validators.required]],
-      parcelGeom: ['',[Validators.required]],
+      parcelGeom: [''],
       parcelArea: ['',[Validators.required]],
       parcelLandUse: ['',[Validators.required]],
       parcelDateCreate: [''],
@@ -101,6 +104,16 @@ export class ProjectsComponent implements OnInit{
     alert(`${geom}`)
   }
 
+  showToast(message: string) {
+    this.toast = document.getElementById("toast");
+    
+    this.toast.innerHTML = message;
+    this.toast.style.display = "block";
+    
+    // Temporizador para que desaparezca
+    setTimeout(() => {this.toast.style.display = "none";}, 5000) //setTimeout(function(),delay_ms)
+  }
+
   onOwnersSubmit() {
     if (this.ownersForm.valid) {
       console.log('Login', this.ownersForm.value);
@@ -125,6 +138,7 @@ export class ProjectsComponent implements OnInit{
       this.ownerReqService.postOwner(Post).subscribe({
         next: (data:OwnersPost) => {
           console.log('Owner registrado:', data)
+          this.showToast('Propietario registrado correctamente.')
           this.resetFormOwner()
         },error: (error: any) => {
             console.log('Error:', error.message);
@@ -140,18 +154,20 @@ export class ProjectsComponent implements OnInit{
   }
 
   onParcelSubmit() {
+    console.log(this.drawWkt);
     if (this.parcelForm.valid) {
     console.log('Register', this.parcelForm.value);
     var dataPost: Parcel = {
       code: this.parcelForm.value.parcelCode,
       municipality: this.parcelForm.value.parcelMunicipality,
-      geom: this.parcelForm.value.parcelGeom,
+      geom: this.drawWkt,
       party_owner: this.parcelForm.value.parcelOwner,
       area: this.parcelForm.value.parcelArea,
       land_use: this.parcelForm.value.parcelLandUse,
       date_create: this.parcelForm.value.parcelDateCreate,
       update_at: this.parcelForm.value.parcelUpdateAt,
     }
+    console.log(this.drawWkt);
     console.log(dataPost)
     this.postParcel(dataPost)
   } else {
@@ -164,6 +180,7 @@ postParcel(dataPost:Parcel):void {
     this.parcelsReqService.postParcel(dataPost).subscribe({
       next: (data: Parcel) => {
         console.log('Parcel registrada:', data)
+        this.showToast('Parcela registrada correctamente.')
         this.resetFormParcel()
       },error: (error: any) => {
           console.log('Error:', error.message);

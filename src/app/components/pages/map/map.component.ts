@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MapService } from '../../../services/map.service';
-import { icon, marker, Map, tileLayer, layerGroup, control, GeoJSON } from 'leaflet';
+import { icon, marker, Map, tileLayer, layerGroup, control, GeoJSON, FeatureGroup } from 'leaflet';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
@@ -10,6 +10,7 @@ import { Parcel } from '../../../interfaces/parcel';
 import * as wellknown from 'wellknown'
 import { ProjectsComponent } from '../projects/projects.component';
 import { AuthService } from '../../../services/auth.service';
+import '@geoman-io/leaflet-geoman-free'
 
 @Component({
   selector: 'app-map',
@@ -30,6 +31,11 @@ export class MapComponent implements OnInit{
   public topoEsri = Esri_WorldTopoMap;
   public satelitalEsri = Esri_WorldImagery;
   public parcels: Parcel[] = [];
+
+  private _drawItems! : FeatureGroup;
+  public drawPolygon! : any;
+  public wktPolygon: string = "";
+  public drawWkt!: string;
 
   public baseMaps: {} = {
     "streetMapEsri": this.streetEsri,
@@ -134,6 +140,62 @@ export class MapComponent implements OnInit{
         
       }
     });
+  }
+
+  //iniciador de edicion
+  initDrawControl(): void {
+    this._drawItems = new FeatureGroup();
+    this.map.addLayer(this._drawItems);
+
+    // Configurar controles de dibujo
+    this.map.pm.addControls({  
+      position: 'topleft',  
+      drawCircleMarker: false,
+      rotateMode: false,
+    });  
+
+    // Escuchar eventos de dibujo
+    this.map.on('pm:create', (e: any) => {
+      this.drawPolygon = e.layer;
+      this._drawItems.addLayer(this.drawPolygon);
+      
+      // Obtener WKT del polígono dibujado
+      const coordinates = this.drawPolygon.getLatLngs()[0];
+      console.log(coordinates);
+      const wkt = this.convertToWKT(coordinates);
+      this.drawWkt = wkt; 
+      
+      // Actualizar el formulario
+      this.updateForm(wkt);
+    });
+  }
+
+  //convertir a wkt
+  private convertToWKT(coordinates: any[]): string {
+    // Asegurarse de que el primer y último punto sean iguales para cerrar el polígono
+    if (!this.arePointsEqual(coordinates[0], coordinates[coordinates.length - 1])) {
+      coordinates.push(coordinates[0]);
+    }
+  
+    // Convertir coordenadas a formato WKT
+    const coordsString = coordinates
+      .map(coord => `${coord.lng} ${coord.lat}`)
+      .join(',');
+  
+    return `POLYGON((${coordsString}))`;
+  }
+
+  //guardar wkt en variable
+  private updateForm(wkt: string): void {
+    this.wktPolygon = wkt;
+    console.log('Polígono en formato WKT:', wkt);
+    // Aquí puedes agregar la lógica adicional para actualizar tu formulario
+    // Por ejemplo, si tienes un formulario reactivo:
+    // this.form.patchValue({ geometry: wkt });
+  }
+  
+  private arePointsEqual(point1: any, point2: any): boolean {
+    return point1.lat === point2.lat && point1.lng === point2.lng;
   }
 
   // Remover el mapa al cambiar de ruta en la web

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReplacePipe } from '../../../replace.pipe';
@@ -10,14 +10,14 @@ import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, ReplacePipe, RouterLink, UserLoginComponent],
+  imports: [ReactiveFormsModule, CommonModule, ReplacePipe, RouterLink, UserLoginComponent, AsyncPipe, NgIf],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css'
 })
 export class UserRegisterComponent implements OnInit{
 
   private _router = inject(Router)
-  private _authService = inject(AuthService)
+  public authService = inject(AuthService)
 
   formRegister : FormGroup ;
   usuarioActivo: Users = {
@@ -85,12 +85,12 @@ export class UserRegisterComponent implements OnInit{
       password: this.formRegister.value.password,
     }
 
-    this._authService.register(objeto).subscribe({
+    this.authService.register(objeto).subscribe({
       next:(data:any) => {
         if(data.isSucces){
           let token: string = data.token
           let username: string = data.username;
-          this._authService.logged(token, username)
+          this.authService.logged(token, username)
           console.log({data})
           alert(data.message);
         }else {
