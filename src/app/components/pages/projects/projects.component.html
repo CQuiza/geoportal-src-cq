@@ -1,14 +1,22 @@
-<br><br><br><br>
+<br><br>
 
 <div>
   <p id="toast" style="display: none;"></p>
 </div>
 
 <div class="container">
-  <div class="button-group">
-    <button mat-raised-button color="primary" (click)="showForm('owners')">Owners Register</button>
-    <button mat-raised-button color="accent" (click)="showForm('parcels')">Parcels</button>
-  </div>
+  <!--div class="button-group">
+    <button mat-raised-button color="accent" (click)="showForm('owners')">Owners Register</button>
+    <button mat-raised-button color="actual" (click)="showForm('party')">Partys</button>
+    <button mat-raised-button color="actual" (click)="showForm('parcels')">Parcels</button>
+  </div-->
+
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="bold" (click)="showForm('owners')">Owners</mat-button-toggle>
+    <mat-button-toggle value="italic" (click)="showForm('party')" >Partys</mat-button-toggle>
+    <mat-button-toggle value="underline" (click)="showForm('parcels')" >Parcels</mat-button-toggle>
+  </mat-button-toggle-group>
+  <br>
 
   <div>
     <p id="toast" style="display: none;"></p>
@@ -16,6 +24,8 @@
 
   <!-- Formulario de Login -->
   @if (selectedForm === 'owners') {
+
+    
     <form [formGroup]="ownersForm" (ngSubmit)="onOwnersSubmit()" class="form">
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
@@ -117,8 +127,10 @@
     </section>
   }
 
-  <!-- Formulario de Registro -->
+  <!-- Formulario de Registro parcelas -->
   @if (selectedForm === 'parcels') {
+
+    
     <form [formGroup]="parcelForm" (ngSubmit)="onParcelSubmit()" class="form">
       
       <mat-form-field appearance="fill">
@@ -228,13 +240,17 @@
     </section>
   }
 
+  @if (selectedForm === 'party') {
+    <section>
+      <div class="container">
+        <app-tables></app-tables>
+      </div>
+    </section>
+  }
+
 </div>
 
 <br><br>
 <p>{{drawWkt}} </p>
 
-<section>
-  <div class="container">
-    <app-tables></app-tables>
-  </div>
-</section>
+

@@ -11,11 +11,12 @@ import * as wellknown from 'wellknown'
 import { ProjectsComponent } from '../projects/projects.component';
 import { AuthService } from '../../../services/auth.service';
 import '@geoman-io/leaflet-geoman-free'
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, NgIf, NgFor, ProjectsComponent, AsyncPipe],
+  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, NgIf, NgFor, ProjectsComponent, AsyncPipe, MatInputModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
@@ -36,6 +37,7 @@ export class MapComponent implements OnInit{
   public drawPolygon! : any;
   public wktPolygon: string = "";
   public drawWkt!: string;
+  public inputGeoJSON: boolean = false;
 
   public baseMaps: {} = {
     "streetMapEsri": this.streetEsri,
@@ -150,8 +152,8 @@ export class MapComponent implements OnInit{
     // Configurar controles de dibujo
     this.map.pm.addControls({  
       position: 'topleft',  
-      drawCircleMarker: false,
-      rotateMode: false,
+      //drawCircleMarker: true,
+      // rotateMode: true,
     });  
 
     // Escuchar eventos de dibujo
@@ -203,6 +205,19 @@ export class MapComponent implements OnInit{
     if (this.map){
       this.map.remove();
     }
+  }
+
+
+  changeInputGeoJSON(){
+    if(this.inputGeoJSON === false){
+      this.inputGeoJSON = true;
+    }else{
+      this.inputGeoJSON = false;
+    }
+  }
+
+  uploadGeoJSON(){
+    alert('uploadGeoJSON')
   }
 
 

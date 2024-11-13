@@ -14,11 +14,12 @@ import { ParcelsReqService } from '../../../services/parcels-req.service';
 import { Parcel } from '../../../interfaces/parcel';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [MatButtonModule, MatFormField, MatInputModule, ReactiveFormsModule, NgIf, TablesComponent, MatTableModule, CommonModule, MatDatepickerModule, MatMomentDateModule],
+  imports: [MatButtonModule, MatFormField, MatInputModule, ReactiveFormsModule, NgIf, TablesComponent, MatTableModule, CommonModule, MatDatepickerModule, MatMomentDateModule, MatButtonToggleModule],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'
 })
@@ -34,7 +35,7 @@ export class ProjectsComponent implements OnInit{
   private parcelsReqService = inject(ParcelsReqService)
   private toast! : any;
 
-  selectedForm : 'owners' | 'parcels' = 'owners';
+  selectedForm : 'owners' | 'parcels' | 'party' = 'owners';
   selectedState: 'save' | 'edit' = 'save'
 
   ownersForm : FormGroup;
@@ -67,7 +68,7 @@ export class ProjectsComponent implements OnInit{
     this.showForm('owners');
   }
 
-  showForm(form: 'owners' | 'parcels'):void {
+  showForm(form: 'owners' | 'parcels' | 'party'):void {
     this.selectedForm = form;
     if(form === 'owners'){
       this.ownerReqService.getOwner().subscribe({
@@ -83,7 +84,7 @@ export class ProjectsComponent implements OnInit{
         }
       })
 
-    } else{
+    } else if (form === 'parcels'){
       this.parcelsReqService.getParcels().subscribe({
         next: (data: Parcel[]) => {
           if(data){
@@ -96,6 +97,7 @@ export class ProjectsComponent implements OnInit{
             console.log('Error:', error.message);
         }
       })
+    } else {
     }
   }
 
