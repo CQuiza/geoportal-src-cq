@@ -27,49 +27,55 @@
 
   @if (inputGeoJSON === true) {
     
-    <form class="geoJSON-form">
+    <form class="inputGeoJSONForm" [formGroup]="inputGeoJSONForm">
       <mat-form-field class="example-full-width">
         <mat-label>Paste the GeoJSON</mat-label>
-        <textarea matInput placeholder='{ "type": "FeatureCollection",
-        "features": [
-          { "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [102.0, 0.5]
-              },
-              "properties": {
-                "prop0": "value0"
-              }
-            },
-          { "type": "Feature",
-            "geometry": {
-              "type": "LineString",
+        <textarea formControlName="geojson" matInput placeholder='{
+          "type": "Feature",
+          "geometry": {
+              "type": "Polygon",
               "coordinates": [
-                [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
-                ]
-              },
-            "properties": {
-              "prop0": "value0",
-              "prop1": 0.0
-              }
-            },
-          { "type": "Feature",
-             "geometry": {
-               "type": "Polygon",
-               "coordinates": [
-                 [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
-                   [100.0, 1.0], [100.0, 0.0] ]
-                 ]
-             },
-             "properties": {
-               "prop0": "value0",
-               "prop1": {"this": "that"}
-               }
-             }
-           ]
-          }' style="width: 100%; height: 100%;"></textarea>
+                  [
+                      [
+                          -74.15181077443609,
+                          4.676631914779879
+                      ],
+                      [
+                          -74.15173214048637,
+                          4.676589463194369
+                      ],
+                      [
+                          -74.15185992065466,
+                          4.676407683299127
+                      ],
+                      [
+                          -74.15194292315714,
+                          4.676452311900528
+                      ],
+                      [
+                          -74.15187521058934,
+                          4.676554631122289
+                      ],
+                      [
+                          -74.15181077443609,
+                          4.676631914779879
+                      ]
+                  ]
+              ]
+          },
+          "properties": {
+              "code": 2133,
+              "municipality": 1,
+              "area": "65.00",
+              "party_owner": 1,
+              "land_use": "commercial",
+              "date_create": "2024-11-02T23:00:00Z",
+              "update_at": "2024-11-21T23:00:00Z"
+          }
+      }' style="width: 100%; height: 100%;"></textarea>
         </mat-form-field>
-        <button type="button" class="btn btn-primary" (click)="uploadGeoJSON()">Upload GeoJSON</button>
+        <button type="button" class="btn btn-primary" style="margin-top: 5px;" (click)="uploadGeoJSON()">Upload GeoJSON</button>
+        <button type="button" class="btn btn-outline-secondary" style="margin-top: 5px;" (click)="saveGeoJSON()">Upload GeoJSON</button>
     </form>
     <br>
 
@@ -101,6 +107,6 @@
   
   
   <div >
-    <app-projects [drawWkt] = "drawWkt"></app-projects>
+    <app-projects [drawWkt] = "drawWkt" [inputWktPolygon] = "inputWktPolygon" ></app-projects>
   </div>
 }

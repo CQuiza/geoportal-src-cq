@@ -9,7 +9,7 @@
   background-color: #e0e0e0; /* Color de fondo como referencia visual */
 }
 
-.geoJSON-form {
+.inputGeoJSONForm {
   flex: 1 1 30%; /* El formulario ocupará el mismo ancho que el mapa */
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ textarea {
     flex-direction: column;
   }
 
-  .geoJSON-form,
+  .inputGeoJSONForm,
   .example-form {
     flex: 1 1 100%; /* Ambos elementos ocupan el ancho completo en pantallas pequeñas */
     min-height: 300px; /* Ajuste de altura mínima para pantallas pequeñas */

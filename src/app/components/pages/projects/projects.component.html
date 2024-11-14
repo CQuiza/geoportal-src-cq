@@ -215,19 +215,19 @@
               </tr>
             </thead>
 
-            @for (value of data; track value) {
+            @for (value of data.features; track value) {
               <tr>
                 <td>
-                  <button type="button" class="btn btn-light" (click)="getRecord(value.code)">{{value.code}}</button>
+                  <button type="button" class="btn btn-light" (click)="getRecord(value.properties.code)">{{value.properties.code}}</button>
                 </td>
-                <td style="color: gray;">{{value.municipality}}</td>
-                <td style="color: gray;">{{value.party_owner}}</td>
-                <td style="color: gray;">{{value.area}}</td>
-                <td style="color: gray;">{{value.land_use}}</td>
-                <td style="color: gray;">{{value.date_create}}</td>
-                <td style="color: gray;">{{value.update_at}}</td>
+                <td style="color: gray;">{{value.properties.municipality}}</td>
+                <td style="color: gray;">{{value.properties.party_owner}}</td>
+                <td style="color: gray;">{{value.properties.area}}</td>
+                <td style="color: gray;">{{value.properties.land_use}}</td>
+                <td style="color: gray;">{{value.properties.date_create}}</td>
+                <td style="color: gray;">{{value.properties.update_at}}</td>
                 <td>
-                  <button type="button" class="btn btn-light" (click)="showGeom(value.geom)">Show</button>
+                  <button type="button" class="btn btn-light" (click)="showGeom(value.geometry.coordinates)">Show</button>
                 </td>
               </tr>
               

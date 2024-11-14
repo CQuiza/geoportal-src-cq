@@ -26,8 +26,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 export class ProjectsComponent implements OnInit{
 
   @Input() drawWkt!: string;
+  @Input() inputWktPolygon!: string
 
-  data: Parcel[] = [];
+  data: any;
   dataSource: OwnersGet[] = [];
   displayedColumns: string[] = ['id', 'name','lastName','email','phone', 'description', 'task', 'done'];
 
@@ -86,9 +87,9 @@ export class ProjectsComponent implements OnInit{
 
     } else if (form === 'parcels'){
       this.parcelsReqService.getParcels().subscribe({
-        next: (data: Parcel[]) => {
+        next: (data: any) => {
           if(data){
-            console.log('Parcels:', data)
+            console.log('Parcels:', data.features)
             this.data = data
           }else {
             console.log('Parcels: No hay parcels registrados')
@@ -193,20 +194,20 @@ postParcel(dataPost:Parcel):void {
   }
 
   getRecord(code:number):void{
-    console.log(code)
+    // console.log(code)
     this.parcelsReqService.getParcelCode(code).subscribe({
-      next: (data: Parcel) => {
+      next: (data: any) => {
         if(data){
           console.log('Parcel:', data)
           this.parcelForm.patchValue({
-            parcelCode: data.code,
-            parcelMunicipality: data.municipality,
-            parcelGeom: data.geom,
-            parcelOwner: data.party_owner,
-            parcelArea: data.area,
-            parcelLandUse: data.land_use,
-            parcelDateCreate: data.date_create,
-            parcelUpdateAt: data.update_at,
+            parcelCode: data.properties.code,
+            parcelMunicipality: data.properties.municipality,
+            parcelGeom: data.geometry.coordinates,
+            parcelOwner: data.properties.party_owner,
+            parcelArea: data.properties.area,
+            parcelLandUse: data.properties.land_use,
+            parcelDateCreate: data.properties.date_create,
+            parcelUpdateAt: data.properties.update_at,
           })
           this.selectedState = 'edit'
         }else {
@@ -221,11 +222,13 @@ postParcel(dataPost:Parcel):void {
 
   updateParcel(){
     if (this.parcelForm.valid) {
+      console.log('geomForm', this.parcelForm.value.parcelGeom)
+      var parcelWktConverted = this.coordinatesToWKT(this.parcelForm.value.parcelGeom[0])
       console.log('Update', this.parcelForm.value);
       var dataPut: Parcel = {
         code: this.parcelForm.value.parcelCode,
         municipality: this.parcelForm.value.parcelMunicipality,
-        geom: this.parcelForm.value.parcelGeom,
+        geom: parcelWktConverted,
         party_owner: this.parcelForm.value.parcelOwner,
         area: this.parcelForm.value.parcelArea,
         land_use: this.parcelForm.value.parcelLandUse,
@@ -246,6 +249,18 @@ postParcel(dataPost:Parcel):void {
     }else {
       console.log('Formulario de parcela incompleto')
     }
+  }
+
+  coordinatesToWKT(coordinates: number[][]): string {
+    if (!coordinates || coordinates.length === 0) {
+      throw new Error("No se proporcionaron coordenadas.");
+    }
+  
+    // Convertimos cada par de coordenadas a "x y" en WKT
+    const wktCoordinates = coordinates.map(coord => `${coord[0]} ${coord[1]}`).join(', ');
+  
+    // Creamos el WKT con formato POLYGON
+    return `SRID=4326;POLYGON ((${wktCoordinates}))`;
   }
 
   resetFormParcel():void{
