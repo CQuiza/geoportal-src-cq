@@ -1,0 +1,72 @@
+<!-- <div class="aptitude-container">
+    @for (item of aptitudes; track $index) {
+        @for (cultivo of getCultivoNames(item); track $index) {
+            @if (item[cultivo].aptitud == 'No apta' || item[cultivo].aptitud == 'Exclusión legal') {
+                
+            } @else {
+                <div class="aptitude-card">
+                    <h3 class="cultivo-title">{{ cultivo }}</h3>
+                    <ul class="aptitude-details">
+                        <li><strong>Aptitud:</strong> {{ item[cultivo].aptitud }}</li>
+                        <li><strong>Departamento:</strong> {{ item[cultivo].departamen }}</li>
+                        <li><strong>Municipio:</strong> {{ item[cultivo].municipio }}</li>
+                        <li><strong>Nombre Científico:</strong> {{ item[cultivo].nombre_cientifico }}</li>
+                        <li><strong>Servicio:</strong> {{ item[cultivo].servicio }}</li>
+                    </ul>
+                </div>
+                <hr class="divider" />
+            }
+        }
+    }
+</div> -->
+
+<section>
+    <div>
+
+      <table mat-table [dataSource]="cultivosAptos" class="mat-elevation-z8">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <!--ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.key}} </td>
+        </ng-container-->
+
+        <!-- Nombre Científico Column -->
+        <ng-container matColumnDef="nombre_cientifico">
+            <th mat-header-cell *matHeaderCellDef> Nombre Científico </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre_cientifico}} </td>
+          </ng-container>
+
+        <!-- Aptitud Column -->
+        <ng-container matColumnDef="aptitud">
+          <th mat-header-cell *matHeaderCellDef> Aptitud </th>
+          <td mat-cell *matCellDef="let element"> {{element.aptitud}} </td>
+        </ng-container>
+
+        <!-- Departamento Column -->
+        <ng-container matColumnDef="departamen">
+          <th mat-header-cell *matHeaderCellDef> Departamento </th>
+          <td mat-cell *matCellDef="let element"> {{element.departamen}} </td>
+        </ng-container>
+
+        <!-- Municipio Column -->
+        <ng-container matColumnDef="municipio">
+          <th mat-header-cell *matHeaderCellDef> Municipio </th>
+          <td mat-cell *matCellDef="let element"> {{element.municipio}} </td>
+        </ng-container>
+
+        <!-- Servicio Column -->
+        <ng-container matColumnDef="servicio">
+            <th mat-header-cell *matHeaderCellDef> Servicio </th>
+            <td mat-cell *matCellDef="let element"> {{element.servicio}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['nombre_cientifico','aptitud', 'departamen', 'municipio', 'servicio']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['nombre_cientifico','aptitud', 'departamen', 'municipio', 'servicio'];"></tr>
+      </table>
+
+    </div>
+  </section>

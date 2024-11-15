@@ -102,9 +102,16 @@ export class ProjectsComponent implements OnInit{
     }
   }
 
-  showGeom(geom:string):void{
-    console.log('Geom')
-    alert(`${geom}`)
+  showGeomWKT(geom:any):void{
+    // console.log('Geom')
+    // geom = geom.geometry.coordinates
+    // alert(`coordinates: ${geom}`)
+    // alert(`${JSON.stringify(geom, null, 4)}`)
+    alert(this.coordinatesToWKT(geom.geometry.coordinates[0]))
+  }
+
+  showGeomGeoJSON(geom:any){
+    alert(`${JSON.stringify(geom, null, 4)}`)
   }
 
   showToast(message: string) {

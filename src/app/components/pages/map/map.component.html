@@ -13,8 +13,9 @@
   <div style="align-items: center; display: flex; justify-content: left;">
     <button type="button" class="btn btn-outline-secondary" (click)="goUserLocation()">Find me</button>
     @if (userLocation) {
-      <p style="margin-left: 10px;">latitud: {{userLocation[0]}}, longitud: {{userLocation[1]}}, precisión: {{userLocation[2].toFixed(3)}} </p>
+      <!--p style="margin-left: 10px;">latitud: {{userLocation[0]}}, longitud: {{userLocation[1]}}, precisión: {{userLocation[2].toFixed(3)}} </p-->
     }
+    <button type="button" class="btn btn-outline-secondary" style="margin: 3px;" (click)="landPotential()" >Land potential</button>
   </div>
   <!-- End of Selection -->
 
@@ -86,13 +87,17 @@
 </div>
 
 
+@if (landAptitude) {
+  <app-land-aptitude [aptitudes] = "landAptitude" [cultivosAptos] = "cultivosAptos"></app-land-aptitude>
+}
+
 
 
 @if (authService.isLoggedIn$ |async) {
   <mat-card style="width: auto; height: auto;">
     <mat-card-header>
-      <mat-card-title>Entidades</mat-card-title>
-      <mat-card-subtitle>Descripción</mat-card-subtitle>
+      <!--mat-card-title>Entidades</mat-card-title>
+      <mat-card-subtitle>Descripción</mat-card-subtitle-->
     </mat-card-header>  
   </mat-card>
   

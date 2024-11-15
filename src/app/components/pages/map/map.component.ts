@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MapService } from '../../../services/map.service';
-import { icon, marker, Map, tileLayer, layerGroup, control, GeoJSON, FeatureGroup } from 'leaflet';
+import { icon, marker, Map, tileLayer, layerGroup, control, GeoJSON, FeatureGroup, CRS, latLng } from 'leaflet';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
@@ -13,11 +13,12 @@ import { AuthService } from '../../../services/auth.service';
 import '@geoman-io/leaflet-geoman-free'
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { LandAptitudeComponent } from './landAptitude/land-aptitude/land-aptitude.component';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, NgIf, NgFor, ProjectsComponent, AsyncPipe, MatInputModule, ReactiveFormsModule],
+  imports: [MatButton, MatCardActions, MatCardContent, MatCardSubtitle, MatCardTitle, MatCardHeader, MatCard, NgIf, NgFor, ProjectsComponent, AsyncPipe, MatInputModule, ReactiveFormsModule, LandAptitudeComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
@@ -33,9 +34,12 @@ export class MapComponent implements OnInit {
   public topoEsri = Esri_WorldTopoMap;
   public satelitalEsri = Esri_WorldImagery;
   public parcels: any[] = [];
+  public landAptitude! : any;
+  public cultivosAptos! : any;
 
   private _drawItems!: FeatureGroup;
   public drawPolygon!: any;
+  public drawPointPotentialLand!: any ;
   public wktPolygon: string = "";
   public inputWktPolygon: string = "";
   public drawWkt!: string;
@@ -246,7 +250,7 @@ export class MapComponent implements OnInit {
   }
 
   uploadGeoJSON() {
-    alert('uploadGeoJSON')
+    // alert('uploadGeoJSON')
     if (this.inputGeoJSONForm.valid) {
       // console.log(this.inputGeoJSONForm.value.geojson)
       var geoJSONParse = JSON.parse(this.inputGeoJSONForm.value.geojson)
@@ -283,11 +287,13 @@ export class MapComponent implements OnInit {
       this.map.fitBounds(geoJsonLayer.getBounds());
       console.log(geoJsonFeature.geometry.coordinates)
       this.map.flyTo(geoJsonFeature.geometry.coordinates[0][0].reverse(), 18);
+    } else {
+      alert('Please provide GeoJSON Feature')
     }
   }
 
   saveGeoJSON(){
-    alert('Save')
+    // alert('Save')
     var geoJSONParse = JSON.parse(this.inputGeoJSONForm.value.geojson)
     var wkt = this.coordinatesToWKT(geoJSONParse.geometry.coordinates[0]);
     console.log(wkt)
@@ -330,6 +336,68 @@ export class MapComponent implements OnInit {
   
     // Creamos el WKT con formato POLYGON
     return `SRID=4326;POLYGON ((${wktCoordinates}))`;
+  }
+  
+  landPotential(){
+    this._drawItems = new FeatureGroup();
+    this.map.addLayer(this._drawItems);
+
+    // Configurar controles de dibujo
+    this.map.pm.addControls({
+      position: 'topleft',
+      //drawCircleMarker: true,
+      // rotateMode: true,
+    });
+
+    // Escuchar eventos de dibujo
+    this.map.on('pm:create', (e: any) => {
+      this.drawPointPotentialLand = e.layer;
+      this._drawItems.addLayer(this.drawPointPotentialLand);
+      // console.log(this.drawPointPotentialLand);
+      var pointInterest = {
+        lat: this.drawPointPotentialLand.getLatLng().lat,
+        lng: this.drawPointPotentialLand.getLatLng().lng,
+      }
+      console.log(pointInterest)
+      var webMercatorPoint = CRS.EPSG3857.project(latLng(pointInterest.lat, pointInterest.lng));
+      console.log(webMercatorPoint); 
+      // var wktPointInterest = `point(${webMercatorPoint.x} ${webMercatorPoint.y})`;
+      this.reqLandPotential(webMercatorPoint);
+    });
+  }
+
+  reqLandPotential(webMercatorPoint:{x:number, y:number}){
+    if(webMercatorPoint.x){
+      this.mapService.getLandPotential(webMercatorPoint).subscribe({
+        next: (data: any) => {
+          // console.log('Land potential:', data)
+          this.landAptitude = data.aptitudes;
+          var cultivosAptos = [];
+          for (let aptitud of data.aptitudes) {
+
+            for (let cultivo of this.getCultivoNames(aptitud)){
+                if (aptitud[cultivo].aptitud == 'No apta' || aptitud[cultivo].aptitud == 'Exclusión legal'){
+                  // console.log('no aptaaaaaaaa');
+
+                }else {
+                  // console.log(aptitud[cultivo]);
+                  cultivosAptos.push(aptitud[cultivo]);
+                }
+              }
+          }
+          this.cultivosAptos = cultivosAptos
+      
+          // Aquí podrías actualizar el mapa con la información del terreno potencial
+        },error: (error: any) => {
+          console.log('Error:', error.message);
+          alert(`Error al obtener la información del terreno potencial: ${error.message}`)
+        }
+      })
+    }
+  }
+
+  getCultivoNames(obj: any): string[] {
+    return Object.keys(obj);
   }
 
 
